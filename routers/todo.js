@@ -27,30 +27,31 @@ router.post("/addTodo", async (req, res) => {
   }
 });
 
-router.put("/updateTodo/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    let findTodo = await Todo.findByIdAndUpdate(
-      id,
-      { ...req.body },
-      { new: true }
-    );
-    if (findTodo) {
-      console.log(chalk.green("Todo updated successfully:", findTodo));
-      res.status(200).json({ message: "Todo updated successfully", findTodo });
+  router.put("/updateTodo/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+      let findTodo = await Todo.findByIdAndUpdate(
+        id,
+        { ...req.body },
+        { new: true }
+      );
+      if (findTodo) {
+        console.log(chalk.green("Todo updated successfully:", findTodo));
+        res.status(200).json({ message: "Todo updated successfully", findTodo });
+      }
+      if (!findTodo) {
+        console.log(chalk.red("Todo not found with id:", id));
+        res.status(404).json({ error: "Todo not found" });
+      }
+      console.log(chalk.blue("Found todo:", findTodo));
+    } catch (error) {
+      console.error(chalk.red("Error updating todo:", error));
+      res.status(500).json({ error: "Failed to update todo" });
     }
-    if (!findTodo) {
-      console.log(chalk.red("Todo not found with id:", id));
-      res.status(404).json({ error: "Todo not found" });
-    }
-    console.log(chalk.blue("Found todo:", findTodo));
-  } catch (error) {
-    console.error(chalk.red("Error updating todo:", error));
-    res.status(500).json({ error: "Failed to update todo" });
-  }
-});
+  });
 router.delete("/deleteTodo/:id", async (req, res) => {
   const { id } = req.params;
+  console.log("req.params=>",req.params)
   try {
     let deleteTodo=await Todo.findByIdAndDelete(id)
     if(deleteTodo){

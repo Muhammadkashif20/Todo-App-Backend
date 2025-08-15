@@ -3,7 +3,7 @@ const Schema=mongoose.Schema
 export const TodoSchema = new Schema(
   {
     name: String,
-    title: String,
+    title:{type: String, required: true},
   },
   {
     timestamps: true,
